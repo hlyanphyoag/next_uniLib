@@ -20,6 +20,10 @@ import Link from "next/link"
 import {FIELD_NAMES, FIELD_TYPES} from "@/constants/index"
 import ImageUpload from "./ImageUpload"
 
+
+import { useRouter } from "next/navigation"
+import { toast } from "@/hooks/toast"
+
 interface Props <T extends FieldValues> {
     schema : ZodType<T>,
     defaultValues : T,
@@ -34,10 +38,27 @@ const AuthForm = <T extends FieldValues > ({type, schema, defaultValues, onSubmi
         defaultValues: defaultValues as DefaultValues<T>
       })
 
+      const router = useRouter();
       const isSignIn = type === 'SIGN_IN'
      
       // 2. Define a submit handler.
-      const handleSubmit : SubmitHandler<T> = async(data) => {}
+      const handleSubmit : SubmitHandler<T> = async(data) => {
+        const result = await onSubmit(data);
+        if(result.success){
+          toast({
+            title: 'Success',
+            description: isSignIn ? 'You have successfully signed in!' : 'You have successfully signed up!',
+          })
+          router.push("/")
+        }else{
+          toast({
+            title: 'Error',
+            description: result.error  && 'An error occurrred',
+            variant: 'destructive',
+          })
+        }
+      }
+
       return (
         <div className="flex flex-col gap-4 ">
             <h1 className = 'text-2xl font-semibold text-white'>

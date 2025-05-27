@@ -10,7 +10,7 @@ interface Props {
 const BookLists = ({title, books, containerClassName} : Props) => {
   return (
     <section className={containerClassName}>
-        <h2 className='font-bebas-neue text-4xl text-light-100 font-medium uppercase'>Latest Book</h2>
+        <h2 className='font-bebas-neue text-4xl text-light-100 font-medium uppercase'>{title}</h2>
 
         <ul className='book-list'>
            {books.map((book) => (
