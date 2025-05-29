@@ -50,20 +50,15 @@ export const { POST } = serve<InitialData>(async (context) => {
   // Welcome Email
   await context.run("new-signup", async () => {
     console.log('publicKey:', publicKey)
-    try{
-      const res =await emailjs.send(serviceId, templateId, {
-        to_email: email,
-        subject: "Welcome to the platform",
-        message: `Welcome ${fullName}!`,
-      }, {
-        publicKey,
-        privateKey
-      });
-      console.log('resEmail:', res.text);
-    }catch(error) {
-      console.log('Email Error:', error)
-    }
-
+    const res =await emailjs.send(serviceId, templateId, {
+      to_email: email,
+      subject: "Welcome to the platform",
+      message: `Welcome ${fullName}!`,
+    }, {
+      publicKey,
+      privateKey
+    });
+    console.log('resEmail:', res.text);
   });
 
   await context.sleep("wait-for-3-days", 60 * 60 * 24 * 3);
