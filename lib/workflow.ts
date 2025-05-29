@@ -17,7 +17,7 @@ export const sendEmail = async ({email, subject, message,}: {
   message: string;
 }) => {
   await qstashClient.publishJSON({
-    url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT || process.env.NEXT_PUBLIC_API_ENTPOINT}/api/auth/workflows/onboarding`,
+    url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT || process.env.NEXT_PUBLIC_API_ENTPOINT}api/auth/workflows/onboarding`,
     body: {
       from: "hlyanphyoaungg@gmail.com",
       to: [email],
