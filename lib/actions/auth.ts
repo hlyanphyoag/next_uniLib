@@ -9,6 +9,8 @@ import { eq, param } from "drizzle-orm";
 import { headers } from "next/headers";
 import { ratelimit } from "../ratelimit";
 import { redirect } from "next/navigation";
+import {workflowClient} from "@/lib/workflow";
+import {config} from "dotenv";
 
 export const signInWithCredentials = async (params: Pick<AuthCredentials, "email" | "password">) => {
     const { email, password } = params;
@@ -61,6 +63,9 @@ export const signUp = async (params: AuthCredentials) => {
             universityCard
         });
 
+        await workflowClient.trigger({
+            url: `${process.env.NEXT_PUBLIC_PRO_API_ENDPOINT}/api/workflows/onboarding`
+        })
         // await signInWithCredentials({ email, password });
         return { success: true, message: 'Sign up successful!' }
     } catch (error) {

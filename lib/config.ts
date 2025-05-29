@@ -1,4 +1,4 @@
-const config = {
+export const config = {
     env: {
         apiEndpoint : process.env.NEXT_PUBLIC_API_ENTPOINT,
         prodApiEndpoint: process.env.NEXT_PUBLIC_PRO_API_ENDPOINT,
