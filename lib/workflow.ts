@@ -1,9 +1,8 @@
 import { Client as WorkflowClient } from "@upstash/workflow";
 import config from "@/lib/config";
-import emailjs from "emailjs-com";
+import emailjs from "@emailjs/nodejs";
 
 export const workflowClient = new WorkflowClient({
-  baseUrl: config.env.upstash.qstashUrl,
   token: config.env.upstash.qstashToken,
 });
 
