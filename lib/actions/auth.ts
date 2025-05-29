@@ -47,7 +47,7 @@ export const signUp = async (params: AuthCredentials) => {
     const existingUser = await db.select().from(users).where(eq(users.email, email)).limit(1)
 
     if (existingUser.length > 0) {
-        return { success: false, message: 'User aready exist!' }
+        return { success: false, message: 'User already exist!' }
     }
 
     const hashedPassword = await hash(password, 10);

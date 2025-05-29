@@ -23,7 +23,7 @@ const BookCard = ({
                 <p className='book-title'>{title}</p>
                 <p className='book-genre'>{genre}</p>
             </div>
-
+            
             {isLoanedBook && (
                 <div className='w-full mt-3'>
                    <div className='book-loaned'>
