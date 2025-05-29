@@ -65,7 +65,7 @@ export const signUp = async (params: AuthCredentials) => {
 
         console.log('TriggerEmail:', email, fullName)
         await workflowClient.trigger({
-            url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT}/api/workflows/onboarding`,
+            url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT}api/workflows/onboarding`,
             body: {
                 email,
                 fullName,
