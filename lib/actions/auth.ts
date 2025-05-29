@@ -10,7 +10,7 @@ import { headers } from "next/headers";
 import { ratelimit } from "../ratelimit";
 import { redirect } from "next/navigation";
 import {workflowClient} from "@/lib/workflow";
-import {config} from "dotenv";
+import emailjs from '@emailjs/nodejs'
 
 export const signInWithCredentials = async (params: Pick<AuthCredentials, "email" | "password">) => {
     const { email, password } = params;
@@ -65,7 +65,7 @@ export const signUp = async (params: AuthCredentials) => {
 
         console.log('TriggerEmail:', email, fullName)
         await workflowClient.trigger({
-            url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT}api/auth/workflows/onboarding`,
+            url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT || process.env.NEXT_PUBLIC_API_ENTPOINT} api/auth/workflows/onboarding`,
             body: {
                 email,
                 fullName,

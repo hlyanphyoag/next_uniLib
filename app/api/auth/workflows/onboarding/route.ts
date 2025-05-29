@@ -3,6 +3,7 @@ import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import { sendEmail } from "@/lib/workflow";
+import emailjs from '@emailjs/nodejs'
 
 type UserState = "non-active" | "active";
 
@@ -42,9 +43,11 @@ export const { POST } = serve<InitialData>(async (context) => {
   const { email, fullName } = context.requestPayload;
   console.log('For welcome email:', email, fullName)
 
+  const serviceId = process.env.EMAILJS_SERVICE_ID!;
+  const templateId = process.env.EMAILJS_TEMPLATE_ID!;
   // Welcome Email
   await context.run("new-signup", async () => {
-    await sendEmail({
+    await emailjs.send(serviceId, templateId, {
       email,
       subject: "Welcome to the platform",
       message: `Welcome ${fullName}!`,
