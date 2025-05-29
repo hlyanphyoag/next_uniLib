@@ -11,8 +11,8 @@ export const config = {
         upstash: {
             redisUrl : process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_URL!,
             redisToken : process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_TOKEN!,
-            qstashUrl: process.env.NEXT_PUBLIC_QSTASH_URL!,
-            qstashToken: "eyJVc2VySUQiOiI0YmUzZTE5ZC0xMjY2LTQ4ZjctOWIzNy1lYjc3ZTM4ODkyNTQiLCJQYXNzd29yZCI6IjUzOWZhOWE0YmUzYTQzODJiOWZhNjNkNWRhMWZhOTFhIn0="
+            qstashUrl: process.env.QSTASH_URL!,
+            qstashToken: process.env.QSTASH_TOKEN!
         }
     }
 }
