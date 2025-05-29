@@ -43,10 +43,10 @@ export const { POST } = serve<InitialData>(async (context) => {
   const { email, fullName } = context.requestPayload;
   console.log('For welcome email:', email, fullName)
 
-  const serviceId = process.env.NEXT_PUBLIC_EMAIL_SERVICE_ID!;
-  const templateId = process.env.NEXT_PUBLIC_EMAIL_TEMPLATE_ID!;
-  const publicKey = process.env.NEXT_PUBLIC_EMAIL_PUBLIC_KEY!;
-  const privateKey = process.env.NEXT_PUBLIC_EMAIL_PRIVATE_KEY!;
+  const serviceId = process.env.EMAIL_SERVICE_ID!;
+  const templateId = process.env.EMAIL_TEMPLATE_ID!;
+  const publicKey = process.env.EMAIL_PUBLIC_KEY!;
+  const privateKey = process.env.EMAIL_PRIVATE_KEY!;
   // Welcome Email
   await context.run("new-signup", async () => {
     await emailjs.send(serviceId, templateId, {
