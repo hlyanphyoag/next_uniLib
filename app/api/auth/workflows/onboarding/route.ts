@@ -52,7 +52,7 @@ export const { POST } = serve<InitialData>(async (context) => {
       to_email: email,
       subject: "Welcome to the platform",
       message: `Welcome ${fullName}!`,
-    }, {publicKey});
+    }, publicKey);
   });
 
   await context.sleep("wait-for-3-days", 60 * 60 * 24 * 3);
