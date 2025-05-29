@@ -49,7 +49,8 @@ export const { POST } = serve<InitialData>(async (context) => {
   const privateKey = process.env.EMAIL_PRIVATE_KEY!;
   // Welcome Email
   await context.run("new-signup", async () => {
-    await emailjs.send(serviceId, templateId, {
+    console.log('publicKey:', publicKey)
+    const res =await emailjs.send(serviceId, templateId, {
       to_email: email,
       subject: "Welcome to the platform",
       message: `Welcome ${fullName}!`,
@@ -57,6 +58,7 @@ export const { POST } = serve<InitialData>(async (context) => {
       publicKey,
       privateKey
     });
+    console.log('resEmail:', res.text);
   });
 
   await context.sleep("wait-for-3-days", 60 * 60 * 24 * 3);
