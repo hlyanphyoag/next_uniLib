@@ -51,6 +51,7 @@ export const { POST } = serve<InitialData>(async (context) => {
   await context.run("new-signup", async () => {
     console.log('EmailJs:', emailjs)
     console.log('publicKey:', publicKey , privateKey)
+    console.log('Template & Service ID:', templateId, serviceId)
     const res =await emailjs.send(serviceId, templateId, {
       to_email: email,
       title: "Welcome to the platform"
