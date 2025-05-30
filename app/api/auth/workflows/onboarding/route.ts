@@ -41,6 +41,7 @@ const getUserState = async (email: string): Promise<UserState> => {
 
 export const { POST } = serve<InitialData>(async (context) => {
   const { email, fullName } = context.requestPayload;
+
   console.log('For welcome email:', email, fullName)
 
   const serviceId = process.env.EMAIL_SERVICE_ID!;
@@ -54,8 +55,9 @@ export const { POST } = serve<InitialData>(async (context) => {
     console.log('Template & Service ID:', templateId, serviceId)
     const res =await emailjs.send(serviceId, templateId, {
       to_email: email,
-      title: "Welcome to the platform"
-      // message: `Welcome ${fullName}!`,
+      title: "Welcome to the platform",
+      name: fullName,
+      message: `Welcome ${fullName}!`,
     }, {
       publicKey: publicKey,
       privateKey: privateKey
