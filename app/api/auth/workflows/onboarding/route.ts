@@ -3,7 +3,7 @@ import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import { sendEmail } from "@/lib/workflow";
-import emailjs from '@emailjs/nodejs'
+import emailjs from "@emailjs/nodejs";
 
 type UserState = "non-active" | "active";
 
@@ -49,7 +49,7 @@ export const { POST } = serve<InitialData>(async (context) => {
   const privateKey = process.env.EMAIL_PRIVATE_KEY!;
   // Welcome Email
   await context.run("new-signup", async () => {
-    console.log('publicKey:', publicKey)
+    console.log('publicKey:', publicKey , privateKey)
     const res =await emailjs.send(serviceId, templateId, {
       to_email: email,
       title: "Welcome to the platform",
@@ -58,7 +58,7 @@ export const { POST } = serve<InitialData>(async (context) => {
       publicKey,
       privateKey
     });
-    console.log('resEmail:', res.text);
+    console.log('resEmail:', res);
   });
 
   await context.sleep("wait-for-3-days", 60 * 60 * 24 * 3);
