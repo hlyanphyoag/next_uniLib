@@ -49,6 +49,7 @@ export const { POST } = serve<InitialData>(async (context) => {
   const privateKey = process.env.EMAIL_PRIVATE_KEY!;
   // Welcome Email
   await context.run("new-signup", async () => {
+    console.log('EmailJs:', emailjs)
     console.log('publicKey:', publicKey , privateKey)
     const res =await emailjs.send(serviceId, templateId, {
       to_email: email,
