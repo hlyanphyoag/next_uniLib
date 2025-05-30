@@ -53,11 +53,11 @@ export const { POST } = serve<InitialData>(async (context) => {
     console.log('publicKey:', publicKey , privateKey)
     const res =await emailjs.send(serviceId, templateId, {
       to_email: email,
-      title: "Welcome to the platform",
+      title: "Welcome to the platform"
       // message: `Welcome ${fullName}!`,
     }, {
-      publicKey,
-      privateKey
+      publicKey: publicKey,
+      privateKey: privateKey
     });
     console.log('resEmail:', res);
   });
