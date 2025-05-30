@@ -9,15 +9,15 @@ export async function POST(req: NextRequest) {
 
   try {
     const result = await emailjs.send(
-        process.env.EMAILJS_SERVICE_ID!,
-        process.env.EMAILJS_TEMPLATE_ID!,
+        process.env.EMAIL_SERVICE_ID!,
+        process.env.EMAIL_TEMPLATE_ID!,
         {
           to_email: email,
           message: `Welcome ${fullName}!`,
         },
         {
-          publicKey: process.env.EMAILJS_PUBLIC_KEY!,
-          privateKey: process.env.EMAILJS_PRIVATE_KEY!,
+          publicKey: process.env.EMAIL_PUBLIC_KEY!,
+          privateKey: process.env.EMAIL_PRIVATE_KEY!,
         }
     );
 
