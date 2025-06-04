@@ -60,11 +60,17 @@ export const borrowBook = async(params: BorrowBookParams) => {
                 .where(eq(users.id, userId))
                 .limit(1)
 
+            const [bookTitle] = await db
+                .select({title: books.title})
+                .from(books)
+                .where(eq(books.id, bookId))
+                .limit(1)
             await workflowClient.trigger({
                 url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT || process.env.NEXT_PUBLIC_API_ENTPOINT}api/auth/workflows/onboarding`,
                 body: {
                     email: user.email,
                     fullName: user.fullName,
+                    title: bookTitle.title,
                     borrowDate: borrowedBookDetails[0].borrowDate,
                     dueDate: borrowedBookDetails[0].dueDate,
                     emailType: 'borrowedBook'

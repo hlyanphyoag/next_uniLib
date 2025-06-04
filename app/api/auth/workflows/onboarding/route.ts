@@ -10,6 +10,9 @@ type InitialData = {
   email: string;
   fullName: string;
   emailType: string;
+  title: string;
+  borrowDate: string;
+  dueDate: string;
 };
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
@@ -40,7 +43,7 @@ const getUserState = async (email: string): Promise<UserState> => {
 };
 
 export const { POST } = serve<InitialData>(async (context) => {
-  const { email, fullName, emailType } = context.requestPayload;
+  const { email, fullName, emailType, title, borrowDate, dueDate } = context.requestPayload;
 
   console.log('For welcome email:', email, fullName)
 
@@ -67,14 +70,12 @@ export const { POST } = serve<InitialData>(async (context) => {
     });
   }else{
     await context.run("borrowBook", async () => {
-      console.log('EmailJs:', emailjs)
-      console.log('publicKey:', publicKey , privateKey)
-      console.log('Template & Service ID:', templateId, serviceId)
-      const res =await emailjs.send(serviceId, templateId, {
-        to_email: email,
-        title: "Welcome to the platform",
+      const res =await emailjs.send(serviceId, "template_gf1b7hc", {
+        email,
+        title,
         name: fullName,
-        message: `Welcome ${fullName}!`,
+        borrowDate,
+        dueDate
       }, {
         publicKey: publicKey,
         privateKey: privateKey
