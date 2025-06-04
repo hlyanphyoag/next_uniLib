@@ -94,7 +94,7 @@ const BorrowBook = ({
                 }
             })
         })()
-    },[])
+    },[handleBorrowBook])
 
     return (
         <Button
