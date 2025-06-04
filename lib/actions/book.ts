@@ -67,7 +67,7 @@ export const borrowBook = async(params: BorrowBookParams) => {
                 .limit(1)
 
             const borrowDate = dayjs(borrowedBookDetails[0].borrowDate).format('DD MMMM YYYY')
-            const dueDate = dayjs(borrowedBookDetails[0].dueDate).format('DD MMMM YYYY')
+            const borrowedDueDate = dayjs(borrowedBookDetails[0].dueDate).format('DD MMMM YYYY')
             console.log(borrowDate, dueDate)
 
             await workflowClient.trigger({
@@ -77,7 +77,7 @@ export const borrowBook = async(params: BorrowBookParams) => {
                     fullName: user.fullName,
                     title: bookTitle.title,
                     borrowDate: borrowDate,
-                    dueDate: dueDate,
+                    dueDate: borrowedDueDate,
                     emailType: 'borrowedBook'
                 }
             })
