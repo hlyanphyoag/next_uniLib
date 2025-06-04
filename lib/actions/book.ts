@@ -4,6 +4,7 @@ import {db} from "@/database/drizzle";
 import {books, borrowRecords, users} from "@/database/schema";
 import {and, eq} from "drizzle-orm";
 import dayjs from "dayjs";
+import {workflowClient} from "@/lib/workflow";
 
 export const borrowBook = async(params: BorrowBookParams) => {
     const { bookId, userId } = params;
@@ -52,6 +53,24 @@ export const borrowBook = async(params: BorrowBookParams) => {
                 .limit(1)
 
             console.log('BorrowedBookDetails:', borrowedBookDetails[0])
+
+            const [user] = await db
+                .select()
+                .from(users)
+                .where(eq(users.id, userId))
+                .limit(1)
+
+            await workflowClient.trigger({
+                url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT || process.env.NEXT_PUBLIC_API_ENTPOINT}api/auth/workflows/onboarding`,
+                body: {
+                    email: user.email,
+                    fullName: user.fullName,
+                    borrowDate: borrowedBookDetails[0].borrowDate,
+                    dueDate: borrowedBookDetails[0].dueDate,
+                    emailType: 'borrowedBook'
+                }
+            })
+            console.log('pushEmail')
 
             return {
                 success: true,
