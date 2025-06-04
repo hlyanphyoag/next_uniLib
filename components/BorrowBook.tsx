@@ -54,8 +54,12 @@ const BorrowBook = ({
                     description: "Book borrowed successfully",
                 });
 
+                router.push("/");
+
+
                 //send email to user after borrowing book
-                await workflowClient.trigger({
+                console.log('Sending borrow email to user ...')
+               const sendEmail = await workflowClient.trigger({
                     url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT || process.env.NEXT_PUBLIC_API_ENTPOINT}api/auth/workflows/onboarding`,
                     body: {
                         email,
@@ -65,8 +69,7 @@ const BorrowBook = ({
                         emailType: 'borrowedBook'
                     }
                 })
-
-                router.push("/");
+                console.log('pushEmail:', sendEmail)
             } else{
                 toast({
                     title: "Error",
