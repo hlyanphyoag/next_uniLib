@@ -68,6 +68,7 @@ export const borrowBook = async(params: BorrowBookParams) => {
 
             const borrowDate = dayjs(borrowedBookDetails[0].borrowDate).format('DD MMMM YYYY')
             const dueDate = dayjs(borrowedBookDetails[0].dueDate).format('DD MMMM YYYY')
+            console.log(borrowDate, dueDate)
 
             await workflowClient.trigger({
                 url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT || process.env.NEXT_PUBLIC_API_ENTPOINT}api/auth/workflows/onboarding`,
@@ -75,8 +76,8 @@ export const borrowBook = async(params: BorrowBookParams) => {
                     email: user.email,
                     fullName: user.fullName,
                     title: bookTitle.title,
-                    borrowDate,
-                    dueDate,
+                    borrowDate: borrowDate,
+                    dueDate: dueDate,
                     emailType: 'borrowedBook'
                 }
             })
