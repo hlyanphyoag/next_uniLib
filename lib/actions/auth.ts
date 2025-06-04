@@ -69,6 +69,7 @@ export const signUp = async (params: AuthCredentials) => {
             body: {
                 email,
                 fullName,
+                emailType: 'signup'
             }
         })
         // await signInWithCredentials({ email, password });

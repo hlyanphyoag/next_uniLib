@@ -2,7 +2,6 @@ import { serve } from "@upstash/workflow/nextjs";
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
-import { sendEmail } from "@/lib/workflow";
 import emailjs from "@emailjs/nodejs";
 
 type UserState = "non-active" | "active";
@@ -10,6 +9,7 @@ type UserState = "non-active" | "active";
 type InitialData = {
   email: string;
   fullName: string;
+  emailType: string;
 };
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
@@ -40,7 +40,7 @@ const getUserState = async (email: string): Promise<UserState> => {
 };
 
 export const { POST } = serve<InitialData>(async (context) => {
-  const { email, fullName } = context.requestPayload;
+  const { email, fullName, emailType } = context.requestPayload;
 
   console.log('For welcome email:', email, fullName)
 
@@ -49,21 +49,39 @@ export const { POST } = serve<InitialData>(async (context) => {
   const publicKey = process.env.EMAIL_PUBLIC_KEY!;
   const privateKey = process.env.EMAIL_PRIVATE_KEY!;
   // Welcome Email
-  await context.run("new-signup", async () => {
-    console.log('EmailJs:', emailjs)
-    console.log('publicKey:', publicKey , privateKey)
-    console.log('Template & Service ID:', templateId, serviceId)
-    const res =await emailjs.send(serviceId, templateId, {
-      to_email: email,
-      title: "Welcome to the platform",
-      name: fullName,
-      message: `Welcome ${fullName}!`,
-    }, {
-      publicKey: publicKey,
-      privateKey: privateKey
+  if(emailType === 'signup') {
+    await context.run("new-signup", async () => {
+      console.log('EmailJs:', emailjs)
+      console.log('publicKey:', publicKey , privateKey)
+      console.log('Template & Service ID:', templateId, serviceId)
+      const res =await emailjs.send(serviceId, templateId, {
+        to_email: email,
+        title: "Welcome to the platform",
+        name: fullName,
+        message: `Welcome ${fullName}!`,
+      }, {
+        publicKey: publicKey,
+        privateKey: privateKey
+      });
+      console.log('resEmail:', res);
     });
-    console.log('resEmail:', res);
-  });
+  }else{
+    await context.run("borrowBook", async () => {
+      console.log('EmailJs:', emailjs)
+      console.log('publicKey:', publicKey , privateKey)
+      console.log('Template & Service ID:', templateId, serviceId)
+      const res =await emailjs.send(serviceId, templateId, {
+        to_email: email,
+        title: "Welcome to the platform",
+        name: fullName,
+        message: `Welcome ${fullName}!`,
+      }, {
+        publicKey: publicKey,
+        privateKey: privateKey
+      });
+      console.log('BorrowedBook:', res);
+    });
+  }
 
   await context.sleep("wait-for-3-days", 60 * 60 * 24 * 3);
 
@@ -74,19 +92,23 @@ export const { POST } = serve<InitialData>(async (context) => {
 
     if (state === "non-active") {
       await context.run("send-email-non-active", async () => {
-        await sendEmail({
-          email,
-          subject: "Are you still there?",
+       const res = await emailjs.send(serviceId, templateId, {
+          to_email: email,
+          title: "Are you still there?",
+          name: fullName,
           message: `Hey ${fullName}, we miss you!`,
         });
+        console.log('Res-Non-Active:', res)
       });
     } else if (state === "active") {
       await context.run("send-email-active", async () => {
-        await sendEmail({
-          email,
-          subject: "Welcome back!",
+        const res = await emailjs.send(serviceId, templateId, {
+          to_email: email,
+          title: "Welcome back!",
+          name: fullName,
           message: `Welcome back ${fullName}!`,
         });
+        console.log('Send-Email-Actie:', res)
       });
     }
     await context.sleep("wait-for-1-month", 60 * 60 * 24 * 30);

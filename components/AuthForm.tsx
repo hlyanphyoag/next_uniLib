@@ -42,7 +42,9 @@ const AuthForm = <T extends FieldValues > ({type, schema, defaultValues, onSubmi
      
       // 2. Define a submit handler.
       const handleSubmit : SubmitHandler<T> = async(data) => {
+          console.log('Data:', data)
         const result = await onSubmit(data);
+          console.log('Result:', result)
         if(result.success){
           toast({
             title: 'Success',
@@ -52,7 +54,7 @@ const AuthForm = <T extends FieldValues > ({type, schema, defaultValues, onSubmi
         }else{
           toast({
             title: 'Error',
-            description: result.error  && 'An error occurrred',
+            description: result.error  && 'An error occurred',
             variant: 'destructive',
           })
         }
@@ -78,7 +80,7 @@ const AuthForm = <T extends FieldValues > ({type, schema, defaultValues, onSubmi
                      <FormLabel className = 'capatilize'>{FIELD_NAMES[field.name as keyof typeof FIELD_NAMES
                      ]}</FormLabel>
                      <FormControl>
-                        {field.name === 'universityCard' ? <ImageUpload  onFileChange = {field.onChange}/> : 
+                        {field.name === 'universityCard' ? <ImageUpload  onFileChange = {field.onChange}/> :
                         <Input required 
                         type={FIELD_TYPES[field.name as keyof typeof FIELD_TYPES]}
                          {...field} 
