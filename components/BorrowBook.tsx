@@ -38,6 +38,7 @@ const BorrowBook = ({
                 description: message,
                 variant: "destructive",
             });
+
             return;
         }
 
@@ -54,16 +55,16 @@ const BorrowBook = ({
                 });
 
                 //Send Email
-                await workflowClient.trigger({
-                    url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT || process.env.NEXT_PUBLIC_API_ENTPOINT}api/auth/workflows/onboarding`,
-                    body: {
-                        email,
-                        fullName,
-                        borrowDate: borrowedBookDetails?.borrowDate,
-                        dueDate: borrowedBookDetails?.dueDate,
-                        emailType: 'borrowedBook'
-                    }
-                })
+                // await workflowClient.trigger({
+                //     url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT || process.env.NEXT_PUBLIC_API_ENTPOINT}api/auth/workflows/onboarding`,
+                //     body: {
+                //         email,
+                //         fullName,
+                //         borrowDate: borrowedBookDetails?.borrowDate,
+                //         dueDate: borrowedBookDetails?.dueDate,
+                //         emailType: 'borrowedBook'
+                //     }
+                // })
 
                 router.push("/");
             } else{
